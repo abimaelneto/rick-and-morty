@@ -1,34 +1,6 @@
 <script>
 import { RouterLink, RouterView } from "vue-router";
-export default {
-  data() {
-    return {
-      characters: {},
-      prevCharacters: null,
-      nextCharacters: null,
-    };
-  },
-  methods: {
-    getCharacters(url) {
-      fetch(url)
-        .then((res) => res.json())
-        .then((data) => {
-          this.prevCharacters = data.info.prev;
-          this.nextCharacters = data.info.next;
-          this.characters = data.results;
-        });
-    },
-    prev() {
-      this.getCharacters(this.prevCharacters);
-    },
-    next() {
-      this.getCharacters(this.nextCharacters);
-    },
-  },
-  mounted() {
-    this.getCharacters("https://rickandmortyapi.com/api/character");
-  },
-};
+
 </script>
 
 <template>
@@ -41,7 +13,7 @@ export default {
     /></RouterLink>
   </header>
 
-  <RouterView :characters="characters" @prev="prev" @next="next" />
+  <RouterView />
 </template>
 
 <style scoped></style>
