@@ -1,5 +1,8 @@
 <script>
 export default {
+  props: {
+    characters: Object,
+  },
   data() {
     return {
       character: {},
@@ -10,14 +13,15 @@ export default {
       const res = await fetch(url);
       const data = await res.json();
 
-      const { name, status, species, gender, origin, episode } = data;
+      const { name, status, species, gender, location, image, episode } = data;
       this.character = {
         Name: name,
         Status: status,
-        Espécie: species,
-        Genero: gender,
-        "Local de Origem": origin,
-        Episódio: episode,
+        Species: species,
+        Gender: gender,
+        "Last Seen": location,
+        Image: image,
+        Episode: episode,
       };
     },
   },
@@ -29,10 +33,9 @@ export default {
 </script>
 
 <template>
-  <table>
-    <tr v-for="(value, label) in character" :key="label">
-      <th>{{ label }}</th>
-      <td>{{ value }}</td>
-    </tr>
-  </table>
+  <main>
+    <div v-for="character in characters" >
+      <p>{{ Name }}</p>
+    </div>
+  </main>
 </template>
