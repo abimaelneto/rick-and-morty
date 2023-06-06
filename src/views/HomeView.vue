@@ -1,20 +1,31 @@
 <script>
 export default {
-  props: {
-    characters: Object,
-  },
   data() {
     return {
-      characterId: this.$props.characters.id,
+      characters: {},
+      prevCharacters: null,
+      nextCharacters: null,
     };
   },
   methods: {
+    getCharacters(url) {
+      fetch(url)
+        .then((res) => res.json())
+        .then((data) => {
+          this.prevCharacters = data.info.prev;
+          this.nextCharacters = data.info.next;
+          this.characters = data.results;
+        });
+    },
     prev() {
-      this.$emit("prev");
+      this.getCharacters(this.prevCharacters);
     },
     next() {
-      this.$emit("next");
+      this.getCharacters(this.nextCharacters);
     },
+  },
+  mounted() {
+    this.getCharacters("https://rickandmortyapi.com/api/character");
   },
 };
 </script>
