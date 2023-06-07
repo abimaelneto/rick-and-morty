@@ -38,13 +38,36 @@ export default {
 </script>
 
 <template>
-  <main>
+  <main class="center">
     <div class="locations">
-      <h2>{{ location.name }}</h2>
-      <p>Dimension</p>
+      <h2 class="locationName">{{ location.name }}</h2>
+      <p class="info">Dimension</p>
       <h3>{{ location.dimension }}</h3>
-      <h3>Residents</h3>
+
+      <h3 class="residents">Residents</h3>
       <Residents :residents="residents" />
     </div>
   </main>
 </template>
+
+<style scoped>
+main {
+  text-align: center;
+  margin: 2rem;
+}
+.locationName {
+  color: #00ff55;
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.locations h3 {
+  color: #fff;
+  font-size: 1.5rem;
+}
+
+.residents {
+  color: #00ff55 !important;
+  margin-top: 1rem;
+}
+</style>
