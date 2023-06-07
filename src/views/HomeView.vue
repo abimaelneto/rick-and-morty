@@ -34,7 +34,8 @@ export default {
   <main>
     <div class="characters" v-for="character in characters">
       <img :src="`${character.image}`" alt="" />
-      <h2>{{ character.name }}</h2>
+      <RouterLink :to="`/character/${character.id}`">{{ character.name }}</RouterLink>
+      
 
       <h3>{{ character.species }}</h3>
 
