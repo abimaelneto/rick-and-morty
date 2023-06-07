@@ -41,7 +41,11 @@ export default {
       <h3>{{ character.status }}</h3>
 
       <p>Last Seen</p>
-      <h3>{{ character.location.name }}</h3>
+      <RouterLink
+        :to="`/LocationDetails/${character.location.url.split('/')[5]}`"
+      >
+        <h3>{{ character.location.name }}</h3>
+      </RouterLink>
     </div>
   </main>
   <div class="moreCharacters">
