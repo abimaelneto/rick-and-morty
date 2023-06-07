@@ -1,20 +1,26 @@
 <script>
+import Episodes from "../components/Episodes.vue";
+
 export default {
   props: {
     characters: Object,
   },
+  components: {
+    Episodes,
+  },
   data() {
     return {
       character: {},
-      episodes: {},
+      episodes: [],
     };
   },
   methods: {
     async getCharacter(url) {
       const res = await fetch(url);
       const data = await res.json();
+      this.getEpisodes(data.episode);
 
-      const { id, name, status, species, gender, location, episode } = data;
+      const { id, name, status, species, gender, location } = data;
       this.character = {
         Id: id,
         Name: name,
@@ -22,23 +28,14 @@ export default {
         Species: species,
         Gender: gender,
         "Last Seen": location.name,
-        // Episodes: episode,
       };
     },
     getEpisodes(urls) {
-      const promise = fetch(urls);
-
-      promise.all
-        .then((res) => res.json())
-        .then((data) => {
-          const { name, episode, characters } = data.episodes;
-          this.person = {
-            "Episode name": name,
-            "Episode code": episode,
-            "Episode characters": characters,
-          };
-          console.log(data.episodes)
-        });
+      urls.map((url) => {
+        fetch(url)
+          .then((res) => res.json())
+          .then((data) => this.episodes.push(data));
+      });
     },
   },
   mounted() {
@@ -60,7 +57,14 @@ export default {
         <th>{{ label }}</th>
         <td>{{ value }}</td>
       </tr>
+      <tr>
+        <th>Episodes</th>
+        <td>NOMES EPISODIOS</td>
+      </tr>
     </table>
+
+    <h3>{{ episode }}</h3>
+    <Episodes :episodes="episodes" />
   </div>
 </template>
 
