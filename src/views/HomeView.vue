@@ -26,16 +26,10 @@ export default {
     next() {
       this.getCharacters(this.nextCharacters);
     },
-    filtered() {
-      if (!this.search) return this.characters;
-
-      const filter = [];
-      for (const character of this.characters) {
-        if (character.name.toLowerCase().includes(this.search.toLowerCase())) {
-          filter.push(character);
-        }
-      }
-      return filter;
+    searchCharacter(src) {
+      this.getCharacters(
+        `https://rickandmortyapi.com/api/character/?name=${src.toLowerCase()}`
+      );
     },
     handleStatus(status) {
       if (status.toLowerCase() == "dead") {
@@ -52,12 +46,21 @@ export default {
 
 <template>
   <main class="center">
-    <input class="search" v-model="search" placeholder="Search Character..." />
+    <div class="search center">
+      <input
+        @keyup.enter="searchCharacter(search)"
+        v-model="search"
+        placeholder="Search Character..."
+      />
+      <span @click="searchCharacter(search)" class="material-symbols-rounded">
+        search
+      </span>
+    </div>
 
     <div class="container">
       <div
         class="character"
-        v-for="character in filtered()"
+        v-for="character in characters"
         :key="character.id"
       >
         <img :src="`${character.image}`" alt="" />
@@ -77,10 +80,6 @@ export default {
           </RouterLink>
         </div>
       </div>
-    </div>
-
-    <div class="item error" v-if="this.search && !filtered().length">
-      <p>No results found!</p>
     </div>
 
     <div class="moreCharacters">
