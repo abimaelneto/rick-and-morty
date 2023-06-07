@@ -17,6 +17,11 @@ a {
   text-decoration: none;
 }
 
+main {
+  text-align: center;
+  margin: 2rem;
+}
+
 .center {
   display: flex;
   justify-content: center;
@@ -30,4 +35,10 @@ a {
 .info {
   color: #4b4b4b;
   font-size: 1.2rem;
+}
+
+.title {
+  color: #00ff55;
+  font-size: 2rem;
+  margin-bottom: 1rem;
 }

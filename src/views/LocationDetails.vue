@@ -40,7 +40,7 @@ export default {
 <template>
   <main class="center">
     <div class="locations">
-      <h2 class="locationName">{{ location.name }}</h2>
+      <h2 class="title">{{ location.name }}</h2>
       <p class="info">Dimension</p>
       <h3>{{ location.dimension }}</h3>
 
@@ -51,15 +51,6 @@ export default {
 </template>
 
 <style scoped>
-main {
-  text-align: center;
-  margin: 2rem;
-}
-.locationName {
-  color: #00ff55;
-  font-size: 2rem;
-  margin-bottom: 1rem;
-}
 
 .locations h3 {
   color: #fff;
