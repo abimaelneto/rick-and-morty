@@ -17,6 +17,15 @@ a {
   text-decoration: none;
 }
 
+.search {
+  background-color: #1e1e1e;
+  margin-top: 2rem;
+  border-radius: 5px;
+  border: 1px solid #00ff56;
+  padding: 1rem 2rem;
+  color: #00ff56;
+}
+
 .search:focus {
   outline: none;
   filter: drop-shadow(0 0 5px #00ff56);
