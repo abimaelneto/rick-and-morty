@@ -51,6 +51,10 @@ export default {
 </template>
 
 <style scoped>
+main {
+  text-align: center;
+  margin: 2rem;
+}
 
 .locations h3 {
   color: #fff;
