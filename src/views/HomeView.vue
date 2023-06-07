@@ -52,6 +52,7 @@ export default {
 
 <template>
   <main class="center">
+  
     <input class="search" v-model="search" placeholder="Search Character..." />
 
     <div class="container">
