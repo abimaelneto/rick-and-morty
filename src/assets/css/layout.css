@@ -2,6 +2,8 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  background-color: #1e1e1e;
+  font-family: "Roboto", sans-serif;
 }
 
 header {
@@ -9,4 +11,18 @@ header {
 }
 .logo {
   width: 300px;
+}
+
+.search:focus {
+  outline: none;
+  filter: drop-shadow(0 0 5px #00ff56);
+}
+
+.italic {
+  font-style: italic;
+}
+
+.info {
+  color: #4b4b4b;
+  font-size: 1.2rem;
 }
