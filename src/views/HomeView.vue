@@ -27,9 +27,13 @@ export default {
       this.getCharacters(this.nextCharacters);
     },
     searchCharacter(src) {
-      this.getCharacters(
-        `https://rickandmortyapi.com/api/character/?name=${src.toLowerCase()}`
-      );
+      try {
+        this.getCharacters(
+          `https://rickandmortyapi.com/api/character/?name=${src.toLowerCase()}`
+        );
+      } catch (error) {
+        alert("Character not found");
+      }
     },
     handleStatus(status) {
       if (status.toLowerCase() == "dead") {
