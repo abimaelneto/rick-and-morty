@@ -52,7 +52,6 @@ export default {
 
 <template>
   <main class="center">
-  
     <input class="search" v-model="search" placeholder="Search Character..." />
 
     <div class="container">
@@ -63,7 +62,9 @@ export default {
       >
         <img :src="`${character.image}`" alt="" />
         <div class="charInfo">
-          <h2 class="charName">{{ character.name }}</h2>
+          <RouterLink :to="`/character/${character.id}`">
+            <h2 class="charName">{{ character.name }}</h2>
+          </RouterLink>
           <p class="info italic">{{ character.species }}</p>
           <h3 :class="['status', handleStatus(character.status)]">
             {{ character.status }}
@@ -120,7 +121,6 @@ main {
 .more:hover {
   background-color: #00ff55;
   color: #1e1e1e;
-
 }
 .more span {
   background: transparent;
