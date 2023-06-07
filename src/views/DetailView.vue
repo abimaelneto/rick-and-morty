@@ -12,6 +12,7 @@ export default {
     return {
       character: {},
       episodes: [],
+      location: [],
       characterId: this.$route.params.id,
     };
   },
@@ -27,7 +28,8 @@ export default {
         Status: status,
         Species: species,
         Gender: gender,
-        "Last Seen": location.name,
+        Location: location.name,
+        locationId: location.url.split("/")[5],
       };
     },
     getEpisodes(urls) {
@@ -54,9 +56,30 @@ export default {
       alt=""
     />
     <table class="table">
-      <tr v-for="(value, label) in character" :key="label">
-        <th>{{ label }}</th>
-        <td>{{ value }}</td>
+      <tr>
+        <th>Name</th>
+        <td>{{ character.Name }}</td>
+      </tr>
+      <tr>
+        <th>Status</th>
+        <td>{{ character.Status }}</td>
+      </tr>
+      <tr>
+        <th>Species</th>
+        <td>{{ character.Species }}</td>
+      </tr>
+      <tr>
+        <th>Gender</th>
+        <td>{{ character.Gender }}</td>
+      </tr>
+
+      <tr>
+        <th>Last Seen</th>
+        <td>
+          <RouterLink :to="`/LocationDetails/${character.locationId}`">
+            {{ character.Location }}
+          </RouterLink>
+        </td>
       </tr>
       <tr>
         <th>Episodes</th>
