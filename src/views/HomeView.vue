@@ -98,15 +98,6 @@ export default {
 main {
   flex-direction: column;
 }
-
-.search {
-  background-color: #1e1e1e;
-  margin-top: 2rem;
-  border-radius: 5px;
-  border: 1px solid #00ff56;
-  padding: 1rem 2rem;
-  color: #00ff56;
-}
 .more {
   border: 1px solid #00ff55;
   cursor: pointer;
