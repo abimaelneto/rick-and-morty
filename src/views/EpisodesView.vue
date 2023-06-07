@@ -47,6 +47,11 @@ export default {
 </template>
 
 <style scoped>
+main {
+  text-align: center;
+  margin: 2rem;
+}
+
 h3 {
   color: #fff;
   font-size: 1.5rem;
