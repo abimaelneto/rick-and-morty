@@ -1,49 +1,49 @@
 <script>
+import Episodes from "../components/Episodes.vue";
+
 export default {
   props: {
     characters: Object,
   },
+  components: {
+    Episodes,
+  },
   data() {
     return {
       character: {},
-      episodes: {},
+      episodes: [],
+      location: [],
+      characterId: this.$route.params.id,
     };
   },
   methods: {
     async getCharacter(url) {
       const res = await fetch(url);
       const data = await res.json();
+      this.getEpisodes(data.episode);
 
-      const { id, name, status, species, gender, location, episode } = data;
+      const { id, name, status, species, gender, location } = data;
       this.character = {
-        Id: id,
         Name: name,
         Status: status,
         Species: species,
         Gender: gender,
-        "Last Seen": location.name,
-        // Episodes: episode,
+        Location: location.name,
+        locationId: location.url.split("/")[5],
       };
     },
     getEpisodes(urls) {
-      const promise = fetch(urls);
-
-      promise.all
-        .then((res) => res.json())
-        .then((data) => {
-          const { name, episode, characters } = data.episodes;
-          this.person = {
-            "Episode name": name,
-            "Episode code": episode,
-            "Episode characters": characters,
-          };
-          console.log(data.episodes)
-        });
+      urls.map((url) => {
+        fetch(url)
+          .then((res) => res.json())
+          .then((data) => this.episodes.push(data));
+      });
     },
   },
   mounted() {
-    const id = this.$route.params.id;
-    this.getCharacter(`https://rickandmortyapi.com/api/character/${id}`);
+    this.getCharacter(
+      `https://rickandmortyapi.com/api/character/${this.characterId}`
+    );
   },
 };
 </script>
@@ -52,13 +52,40 @@ export default {
   <div class="center">
     <img
       class="c-image"
-      :src="`https://rickandmortyapi.com/api/character/avatar/${character.Id}.jpeg`"
+      :src="`https://rickandmortyapi.com/api/character/avatar/${this.characterId}.jpeg`"
       alt=""
     />
     <table class="table">
-      <tr v-for="(value, label) in character" :key="label">
-        <th>{{ label }}</th>
-        <td>{{ value }}</td>
+      <tr>
+        <th>Name</th>
+        <td>{{ character.Name }}</td>
+      </tr>
+      <tr>
+        <th>Status</th>
+        <td>{{ character.Status }}</td>
+      </tr>
+      <tr>
+        <th>Species</th>
+        <td>{{ character.Species }}</td>
+      </tr>
+      <tr>
+        <th>Gender</th>
+        <td>{{ character.Gender }}</td>
+      </tr>
+
+      <tr>
+        <th>Last Seen</th>
+        <td>
+          <RouterLink :to="`/LocationDetails/${character.locationId}`">
+            {{ character.Location }}
+          </RouterLink>
+        </td>
+      </tr>
+      <tr>
+        <th>Episodes</th>
+        <td>
+          <Episodes :episodes="episodes" />
+        </td>
       </tr>
     </table>
   </div>
