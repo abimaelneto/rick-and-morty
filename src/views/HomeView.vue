@@ -6,6 +6,8 @@ export default {
       search: "",
       prevCharacters: null,
       nextCharacters: null,
+      isDead: false,
+      isUnknown: false,
     };
   },
   methods: {
@@ -35,6 +37,12 @@ export default {
       }
       return filter;
     },
+    handleStatus(status) {
+      if (status.toLowerCase() == "dead") {
+        return "dead";
+      } else if (status.toLowerCase() == "unknown") return "unknown";
+      else return "status";
+    },
   },
   mounted() {
     this.getCharacters("https://rickandmortyapi.com/api/character");
@@ -44,23 +52,31 @@ export default {
 
 <template>
   <main>
-    <input v-model="search" placeholder="Search Character..." />
+    <input class="search" v-model="search" placeholder="Search Character..." />
 
-    <div class="character" v-for="character in filtered()" :key="character.id">
-      <img :src="`${character.image}`" alt="" />
-      <h2>{{ character.name }}</h2>
-
-      <h3>{{ character.species }}</h3>
-
-      <h3>{{ character.status }}</h3>
-
-      <p>Last Seen</p>
-      <RouterLink
-        :to="`/LocationDetails/${character.location.url.split('/')[5]}`"
+    <div class="container">
+      <div
+        class="character"
+        v-for="character in filtered()"
+        :key="character.id"
       >
-        <h3>{{ character.location.name }}</h3>
-      </RouterLink>
+        <img :src="`${character.image}`" alt="" />
+        <div class="characterInfo">
+          <h2 class="name">{{ character.name }}</h2>
+          <p class="info italic">{{ character.species }}</p>
+          <h3 :class="['status', handleStatus(character.status)]">
+            {{ character.status }}
+          </h3>
+          <p class="italic info">Last Seen</p>
+          <RouterLink
+            :to="`/LocationDetails/${character.location.url.split('/')[5]}`"
+          >
+            <h3>{{ character.location.name }}</h3>
+          </RouterLink>
+        </div>
+      </div>
     </div>
+
     <div class="item error" v-if="this.search && !filtered().length">
       <p>No results found!</p>
     </div>
@@ -76,4 +92,20 @@ export default {
   </main>
 </template>
 
-<style scoped></style>
+<style scoped>
+main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.search {
+  background-color: #1e1e1e;
+  margin: 10px;
+  border-radius: 5px;
+  border: 1px solid #00ff56;
+  padding: 10px;
+  color: #00ff56;
+}
+</style>
