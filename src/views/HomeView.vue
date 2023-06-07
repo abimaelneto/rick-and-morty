@@ -48,7 +48,8 @@ export default {
 
     <div class="character" v-for="character in filtered()" :key="character.id">
       <img :src="`${character.image}`" alt="" />
-      <h2>{{ character.name }}</h2>
+      <RouterLink :to="`/character/${character.id}`">{{ character.name }}</RouterLink>
+      
 
       <h3>{{ character.species }}</h3>
 
