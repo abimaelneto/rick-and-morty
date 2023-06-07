@@ -17,11 +17,6 @@ a {
   text-decoration: none;
 }
 
-main {
-  text-align: center;
-  margin: 2rem;
-}
-
 .center {
   display: flex;
   justify-content: center;
