@@ -6,6 +6,8 @@ export default {
       search: "",
       prevCharacters: null,
       nextCharacters: null,
+      isDead: false,
+      isUnknown: false,
     };
   },
   methods: {
@@ -35,6 +37,12 @@ export default {
       }
       return filter;
     },
+    handleStatus(status) {
+      if (status.toLowerCase() == "dead") {
+        return "dead";
+      } else if (status.toLowerCase() == "unknown") return "unknown";
+      else return "status";
+    },
   },
   mounted() {
     this.getCharacters("https://rickandmortyapi.com/api/character");
@@ -43,38 +51,78 @@ export default {
 </script>
 
 <template>
-  <main>
-    <input v-model="search" placeholder="Search Character..." />
+  <main class="center">
+  
+    <input class="search" v-model="search" placeholder="Search Character..." />
 
-    <div class="character" v-for="character in filtered()" :key="character.id">
-      <img :src="`${character.image}`" alt="" />
-      <RouterLink :to="`/character/${character.id}`">{{ character.name }}</RouterLink>
-      
-
-      <h3>{{ character.species }}</h3>
-
-      <h3>{{ character.status }}</h3>
-
-      <p>Last Seen</p>
-      <RouterLink
-        :to="`/LocationDetails/${character.location.url.split('/')[5]}`"
+    <div class="container">
+      <div
+        class="character"
+        v-for="character in filtered()"
+        :key="character.id"
       >
-        <h3>{{ character.location.name }}</h3>
-      </RouterLink>
+        <img :src="`${character.image}`" alt="" />
+        <div class="charInfo">
+          <h2 class="charName">{{ character.name }}</h2>
+          <p class="info italic">{{ character.species }}</p>
+          <h3 :class="['status', handleStatus(character.status)]">
+            {{ character.status }}
+          </h3>
+          <p class="italic info">Last Seen</p>
+          <RouterLink
+            :to="`/LocationDetails/${character.location.url.split('/')[5]}`"
+          >
+            <h3 class="charLocation">{{ character.location.name }}</h3>
+          </RouterLink>
+        </div>
+      </div>
     </div>
+
     <div class="item error" v-if="this.search && !filtered().length">
       <p>No results found!</p>
     </div>
 
     <div class="moreCharacters">
-      <button @click="prev">
-        <span class="material-symbols-rounded more prev"> chevron_left </span>
+      <button @click="prev" class="more prev">
+        <span class="material-symbols-rounded center">arrow_back_ios_new</span>
       </button>
-      <button @click="next">
-        <span class="material-symbols-rounded more next"> chevron_right </span>
+      <button @click="next" class="more next">
+        <span class="material-symbols-rounded center">arrow_forward_ios</span>
       </button>
     </div>
   </main>
 </template>
 
-<style scoped></style>
+<style scoped>
+main {
+  flex-direction: column;
+}
+
+.search {
+  background-color: #1e1e1e;
+  margin-top: 2rem;
+  border-radius: 5px;
+  border: 1px solid #00ff56;
+  padding: 1rem 2rem;
+  color: #00ff56;
+}
+.more {
+  border: 1px solid #00ff55;
+  cursor: pointer;
+  margin: 0 1rem 2rem 1rem;
+  font-weight: bold;
+  color: #00ff55;
+  padding: 1rem;
+  font-size: 2rem;
+  transition: all ease 0.3s;
+}
+
+.more:hover {
+  background-color: #00ff55;
+  color: #1e1e1e;
+
+}
+.more span {
+  background: transparent;
+}
+</style>
