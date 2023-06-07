@@ -13,9 +13,19 @@ header {
   width: 300px;
 }
 
+a {
+  text-decoration: none;
+}
+
 .search:focus {
   outline: none;
   filter: drop-shadow(0 0 5px #00ff56);
+}
+
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .italic {
