@@ -12,6 +12,7 @@ export default {
     return {
       character: {},
       episodes: [],
+      characterId: this.$route.params.id,
     };
   },
   methods: {
@@ -22,7 +23,6 @@ export default {
 
       const { id, name, status, species, gender, location } = data;
       this.character = {
-        Id: id,
         Name: name,
         Status: status,
         Species: species,
@@ -39,8 +39,9 @@ export default {
     },
   },
   mounted() {
-    const id = this.$route.params.id;
-    this.getCharacter(`https://rickandmortyapi.com/api/character/${id}`);
+    this.getCharacter(
+      `https://rickandmortyapi.com/api/character/${this.characterId}`
+    );
   },
 };
 </script>
@@ -49,7 +50,7 @@ export default {
   <div class="center">
     <img
       class="c-image"
-      :src="`https://rickandmortyapi.com/api/character/avatar/${character.Id}.jpeg`"
+      :src="`https://rickandmortyapi.com/api/character/avatar/${this.characterId}.jpeg`"
       alt=""
     />
     <table class="table">
@@ -59,12 +60,11 @@ export default {
       </tr>
       <tr>
         <th>Episodes</th>
-        <td>NOMES EPISODIOS</td>
+        <td>
+          <Episodes :episodes="episodes" />
+        </td>
       </tr>
     </table>
-
-    <h3>{{ episode }}</h3>
-    <Episodes :episodes="episodes" />
   </div>
 </template>
 
