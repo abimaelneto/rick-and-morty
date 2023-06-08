@@ -14,7 +14,8 @@ header {
 }
 
 a {
-  text-decoration: none;
+  text-decoration: unset;
+  color: inherit;
 }
 
 .search:focus {
