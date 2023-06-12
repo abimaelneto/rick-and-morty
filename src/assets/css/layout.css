@@ -9,6 +9,7 @@
 iframe {
   border: none;
   height: 300px;
+  background: transparent;
 }
 
 header {
