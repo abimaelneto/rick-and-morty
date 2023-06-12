@@ -1,6 +1,10 @@
 <script>
 import { ref } from "vue";
+import Error from "../components/Error.vue";
 export default {
+  components: {
+    Error,
+  },
   data() {
     return {
       characters: [],
@@ -11,6 +15,7 @@ export default {
       isDead: false,
       isUnknown: false,
       loading: false,
+      error: false,
     };
   },
   methods: {
@@ -19,10 +24,15 @@ export default {
       fetch(url)
         .then((res) => res.json())
         .then((data) => {
-          this.prevCharacters = data.info.prev;
-          this.nextCharacters = data.info.next;
-          this.characters = data.results;
-          this.loading = false;
+          try {
+            this.prevCharacters = data.info.prev;
+            this.nextCharacters = data.info.next;
+            this.characters = data.results;
+            this.loading = false;
+          } catch {
+            this.loading = false;
+            this.error = true;
+          }
         });
     },
     prev() {
@@ -38,18 +48,22 @@ export default {
         );
       } else if (!src) {
         this.getCharacters(
-          `https://rickandmortyapi.com/api/character/?name=${sts.toLowerCase()}`
+          `https://rickandmortyapi.com/api/character/?status=${sts.toLowerCase()}`
+        );
+      } else {
+        this.getCharacters(
+          `https://rickandmortyapi.com/api/character/?name=${src.toLowerCase()}&status=${sts.toLowerCase()}`
         );
       }
-      this.getCharacters(
-        `https://rickandmortyapi.com/api/character/?name=${src.toLowerCase()}&status=${sts.toLowerCase()}`
-      );
     },
     handleStatus(status) {
       if (status.toLowerCase() == "dead") {
         return "dead";
       } else if (status.toLowerCase() == "unknown") return "unknown";
       else return "status";
+    },
+    close() {
+      this.error = false;
     },
   },
   mounted() {
@@ -93,6 +107,8 @@ export default {
       <iframe src="https://embed.lottiefiles.com/animation/39133"></iframe>
     </div>
 
+    <Error v-show="error" @close="close" />
+
     <div class="container" v-show="!loading">
       <div
         class="character"
@@ -134,21 +150,6 @@ main {
   flex-direction: column;
 }
 
-.btn {
-  border: 1px solid #00ff55;
-  cursor: pointer;
-  margin: 0 1rem 2rem 1rem;
-  font-weight: bold;
-  color: #00ff55;
-  padding: 1rem;
-  font-size: 2rem;
-  transition: all ease 0.3s;
-}
-
-.btn:hover {
-  background-color: #00ff55;
-  color: #1e1e1e;
-}
 .btn span {
   background: transparent;
 }
