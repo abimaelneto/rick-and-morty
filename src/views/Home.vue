@@ -37,38 +37,15 @@ export default {
           }
         });
     },
-    prev() {
-      if (!this.prevCharacters) {
-        this.textError = "No prev characters";
-        this.loading = false;
-        this.error = true;
-      } else {
-        this.getCharacters(this.prevCharacters);
-      }
+    paginate(target) {
+      this.getCharacters(
+        target == "next" ? this.nextCharacters : this.prevCharacters
+      );
     },
-    next() {
-      if (!this.nextCharacters) {
-        this.textError = "No more characters";
-        this.loading = false;
-        this.error = true;
-      } else {
-        this.getCharacters(this.nextCharacters);
-      }
-    },
-    handleSearch(src, sts) {
-      if (!sts) {
-        this.getCharacters(
-          `https://rickandmortyapi.com/api/character/?name=${src.toLowerCase()}`
-        );
-      } else if (!src) {
-        this.getCharacters(
-          `https://rickandmortyapi.com/api/character/?status=${sts.toLowerCase()}`
-        );
-      } else {
-        this.getCharacters(
-          `https://rickandmortyapi.com/api/character/?name=${src.toLowerCase()}&status=${sts.toLowerCase()}`
-        );
-      }
+    handleSearch() {
+      this.getCharacters(
+        `https://rickandmortyapi.com/api/character/?name=${this.search.toLowerCase()}&status=${this.status.toLowerCase()}`
+      );
     },
     handleStatus(status) {
       if (status.toLowerCase() == "dead") {
@@ -90,14 +67,11 @@ export default {
   <main class="center">
     <div class="search center">
       <input
-        @keyup.enter="handleSearch(search, filterStatus)"
+        @keyup.enter="handleSearch"
         v-model="search"
         placeholder="Search Character..."
       />
-      <span
-        @click="handleSearch(search, filterStatus)"
-        class="material-symbols-rounded"
-      >
+      <span @click="handleSearch" class="material-symbols-rounded">
         search
       </span>
     </div>
@@ -112,9 +86,7 @@ export default {
         <option>Unknown</option>
       </select>
 
-      <button @click="handleSearch(search, filterStatus)" class="btn filterBtn">
-        FILTER
-      </button>
+      <button @click="handleSearch" class="btn filterBtn">FILTER</button>
     </div>
 
     <div v-show="loading">
@@ -124,10 +96,18 @@ export default {
     <Error v-show="error" @close="close" :textError="textError" />
 
     <div class="moreCharacters">
-      <button @click="prev" class="btn prev">
+      <button
+        @click="paginate('prev')"
+        class="btn prev"
+        :disabled="!prevCharacters"
+      >
         <span class="material-symbols-rounded center">arrow_back_ios_new</span>
       </button>
-      <button @click="next" class="btn next">
+      <button
+        @click="paginate('next')"
+        class="btn next"
+        :disabled="!nextCharacters"
+      >
         <span class="material-symbols-rounded center">arrow_forward_ios</span>
       </button>
     </div>
