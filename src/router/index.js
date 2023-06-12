@@ -1,8 +1,8 @@
 import { createRouter, createWebHistory } from "vue-router";
-import HomeView from "../views/HomeView.vue";
+import HomeView from "../views/Home.vue";
 import LocationDetails from "../views/LocationDetails.vue";
-import DetailView from "../views/DetailView.vue";
-import EpisodeView from "../views/EpisodesView.vue"
+import DetailView from "../views/Detail.vue";
+import EpisodeView from "../views/Episodes.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -13,8 +13,8 @@ const router = createRouter({
       component: HomeView,
     },
     {
-      path: "/LocationDetails/:id",
-      name: "LocationDetails",
+      path: "/location-details/:id",
+      name: "locationDetails",
       component: LocationDetails,
     },
     {
@@ -24,9 +24,9 @@ const router = createRouter({
     },
     {
       path: "/episode/:id",
-      name: "EpisodeView",
+      name: "episodeView",
       component: EpisodeView,
-    }
+    },
   ],
 });
 
