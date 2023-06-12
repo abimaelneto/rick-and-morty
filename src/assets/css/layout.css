@@ -6,6 +6,11 @@
   font-family: "Roboto", sans-serif;
 }
 
+iframe {
+  border: none;
+  height: 300px;
+}
+
 header {
   text-align: center;
 }
@@ -16,11 +21,6 @@ header {
 a {
   text-decoration: unset;
   color: inherit;
-}
-
-.search:focus {
-  outline: none;
-  filter: drop-shadow(0 0 5px #00ff56);
 }
 
 .center {
@@ -36,4 +36,10 @@ a {
 .info {
   color: #4b4b4b;
   font-size: 1.2rem;
+}
+
+.title {
+  color: #00ff55;
+  font-size: 2rem;
+  margin-bottom: 1rem;
 }

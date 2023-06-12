@@ -39,8 +39,21 @@ export default {
 </script>
 
 <template>
-  <h2>Episode: {{ episode.name }}</h2>
-  <h3>{{ episode.episode }}</h3>
-
-  <Residents :residents="residents" />
+  <main>
+    <h2 class="title">Episode: {{ episode.name }}</h2>
+    <h3>{{ episode.episode }}</h3>
+    <Residents :residents="residents" />
+  </main>
 </template>
+
+<style scoped>
+main {
+  text-align: center;
+  margin: 2rem;
+}
+
+h3 {
+  color: #fff;
+  font-size: 1.5rem;
+}
+</style>

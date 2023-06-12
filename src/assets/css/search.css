@@ -1,0 +1,25 @@
+.search {
+  background-color: #1e1e1e;
+  margin-top: 2rem;
+  border-radius: 5px;
+  padding: 0 1rem;
+  border: 1px solid #00ff56;
+}
+.search input {
+  outline: none;
+  border: none;
+  color: #00ff56;
+  padding-right: 1rem;
+  padding: 1rem 1rem 1rem 0;
+}
+
+.search span {
+  font-size: 2rem;
+  color: #00ff56;
+  cursor: pointer;
+}
+
+.search:hover {
+  outline: none;
+  filter: drop-shadow(0 0 5px #00ff56);
+}

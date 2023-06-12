@@ -4,20 +4,24 @@ export default {
     return {
       characters: [],
       search: "",
+      filterStatus: null,
       prevCharacters: null,
       nextCharacters: null,
       isDead: false,
       isUnknown: false,
+      loading: false,
     };
   },
   methods: {
     getCharacters(url) {
+      this.loading = true;
       fetch(url)
         .then((res) => res.json())
         .then((data) => {
           this.prevCharacters = data.info.prev;
           this.nextCharacters = data.info.next;
           this.characters = data.results;
+          this.loading = false;
         });
     },
     prev() {
@@ -26,16 +30,19 @@ export default {
     next() {
       this.getCharacters(this.nextCharacters);
     },
-    filtered() {
-      if (!this.search) return this.characters;
-
-      const filter = [];
-      for (const character of this.characters) {
-        if (character.name.toLowerCase().includes(this.search.toLowerCase())) {
-          filter.push(character);
-        }
+    handleSearch(src, sts) {
+      if (!sts) {
+        this.getCharacters(
+          `https://rickandmortyapi.com/api/character/?name=${src.toLowerCase()}`
+        );
+      } else if (!src) {
+        this.getCharacters(
+          `https://rickandmortyapi.com/api/character/?name=${sts.toLowerCase()}`
+        );
       }
-      return filter;
+      this.getCharacters(
+        `https://rickandmortyapi.com/api/character/?name=${src.toLowerCase()}&status=${sts.toLowerCase()}`
+      );
     },
     handleStatus(status) {
       if (status.toLowerCase() == "dead") {
@@ -52,18 +59,49 @@ export default {
 
 <template>
   <main class="center">
-  
-    <input class="search" v-model="search" placeholder="Search Character..." />
+    <div class="search center">
+      <input
+        @keyup.enter="handleSearch(search, filterStatus)"
+        v-model="search"
+        placeholder="Search Character..."
+      />
+      <span
+        @click="handleSearch(search, filterStatus)"
+        class="material-symbols-rounded"
+      >
+        search
+      </span>
+    </div>
 
-    <div class="container">
+    <div class="filter">
+      <p>Choose Character status:</p>
+
+      <select v-model="filterStatus">
+        <option disabled value="">Choose...</option>
+        <option>Dead</option>
+        <option>Alive</option>
+      </select>
+
+      <button @click="handleSearch(search, filterStatus)" class="btn filterBtn">
+        FILTER
+      </button>
+    </div>
+
+    <div v-show="loading">
+      <iframe src="https://embed.lottiefiles.com/animation/39133"></iframe>
+    </div>
+
+    <div class="container" v-show="!loading">
       <div
         class="character"
-        v-for="character in filtered()"
+        v-for="character in characters"
         :key="character.id"
       >
         <img :src="`${character.image}`" alt="" />
         <div class="charInfo">
-          <h2 class="charName">{{ character.name }}</h2>
+          <RouterLink :to="`/character/${character.id}`">
+            <h2 class="charName">{{ character.name }}</h2>
+          </RouterLink>
           <p class="info italic">{{ character.species }}</p>
           <h3 :class="['status', handleStatus(character.status)]">
             {{ character.status }}
@@ -78,15 +116,11 @@ export default {
       </div>
     </div>
 
-    <div class="item error" v-if="this.search && !filtered().length">
-      <p>No results found!</p>
-    </div>
-
     <div class="moreCharacters">
-      <button @click="prev" class="more prev">
+      <button @click="prev" class="btn prev">
         <span class="material-symbols-rounded center">arrow_back_ios_new</span>
       </button>
-      <button @click="next" class="more next">
+      <button @click="next" class="btn next">
         <span class="material-symbols-rounded center">arrow_forward_ios</span>
       </button>
     </div>
@@ -98,15 +132,7 @@ main {
   flex-direction: column;
 }
 
-.search {
-  background-color: #1e1e1e;
-  margin-top: 2rem;
-  border-radius: 5px;
-  border: 1px solid #00ff56;
-  padding: 1rem 2rem;
-  color: #00ff56;
-}
-.more {
+.btn {
   border: 1px solid #00ff55;
   cursor: pointer;
   margin: 0 1rem 2rem 1rem;
@@ -117,12 +143,11 @@ main {
   transition: all ease 0.3s;
 }
 
-.more:hover {
+.btn:hover {
   background-color: #00ff55;
   color: #1e1e1e;
-
 }
-.more span {
+.btn span {
   background: transparent;
 }
 </style>
