@@ -87,8 +87,8 @@ export default {
 
       <tr>
         <th>Episodes</th>
-        <div class="line">
-          <td class="episodes charLocation">
+        <div class="line">  
+          <td class="episodes">
             <Episodes :episodes="episodes"/>
           </td>
         </div>

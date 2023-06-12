@@ -16,3 +16,10 @@ export default {
     </RouterLink>
   </div>
 </template>
+
+<style scoped>
+
+h3:hover {
+  color: #00ff55;
+}
+</style>
