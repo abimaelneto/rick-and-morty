@@ -4,20 +4,24 @@ export default {
     return {
       characters: [],
       search: "",
+      filterStatus: null,
       prevCharacters: null,
       nextCharacters: null,
       isDead: false,
       isUnknown: false,
+      loading: false,
     };
   },
   methods: {
     getCharacters(url) {
+      this.loading = true;
       fetch(url)
         .then((res) => res.json())
         .then((data) => {
           this.prevCharacters = data.info.prev;
           this.nextCharacters = data.info.next;
           this.characters = data.results;
+          this.loading = false;
         });
     },
     prev() {
@@ -26,9 +30,18 @@ export default {
     next() {
       this.getCharacters(this.nextCharacters);
     },
-    searchCharacter(src) {
+    handleSearch(src, sts) {
+      if (!sts) {
+        this.getCharacters(
+          `https://rickandmortyapi.com/api/character/?name=${src.toLowerCase()}`
+        );
+      } else if (!src) {
+        this.getCharacters(
+          `https://rickandmortyapi.com/api/character/?name=${sts.toLowerCase()}`
+        );
+      }
       this.getCharacters(
-        `https://rickandmortyapi.com/api/character/?name=${src.toLowerCase()}`
+        `https://rickandmortyapi.com/api/character/?name=${src.toLowerCase()}&status=${sts.toLowerCase()}`
       );
     },
     handleStatus(status) {
@@ -48,16 +61,37 @@ export default {
   <main class="center">
     <div class="search center">
       <input
-        @keyup.enter="searchCharacter(search)"
+        @keyup.enter="handleSearch(search, filterStatus)"
         v-model="search"
         placeholder="Search Character..."
       />
-      <span @click="searchCharacter(search)" class="material-symbols-rounded">
+      <span
+        @click="handleSearch(search, filterStatus)"
+        class="material-symbols-rounded"
+      >
         search
       </span>
     </div>
 
-    <div class="container">
+    <div class="filter">
+      <p>Choose Character status:</p>
+
+      <select v-model="filterStatus">
+        <option disabled value="">Choose...</option>
+        <option>Dead</option>
+        <option>Alive</option>
+      </select>
+
+      <button @click="handleSearch(search, filterStatus)" class="btn filterBtn">
+        FILTER
+      </button>
+    </div>
+
+    <div v-show="loading">
+      <iframe src="https://embed.lottiefiles.com/animation/39133"></iframe>
+    </div>
+
+    <div class="container" v-show="!loading">
       <div
         class="character"
         v-for="character in characters"
@@ -83,10 +117,10 @@ export default {
     </div>
 
     <div class="moreCharacters">
-      <button @click="prev" class="more prev">
+      <button @click="prev" class="btn prev">
         <span class="material-symbols-rounded center">arrow_back_ios_new</span>
       </button>
-      <button @click="next" class="more next">
+      <button @click="next" class="btn next">
         <span class="material-symbols-rounded center">arrow_forward_ios</span>
       </button>
     </div>
@@ -97,7 +131,8 @@ export default {
 main {
   flex-direction: column;
 }
-.more {
+
+.btn {
   border: 1px solid #00ff55;
   cursor: pointer;
   margin: 0 1rem 2rem 1rem;
@@ -108,11 +143,11 @@ main {
   transition: all ease 0.3s;
 }
 
-.more:hover {
+.btn:hover {
   background-color: #00ff55;
   color: #1e1e1e;
 }
-.more span {
+.btn span {
   background: transparent;
 }
 </style>

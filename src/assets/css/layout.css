@@ -6,6 +6,11 @@
   font-family: "Roboto", sans-serif;
 }
 
+iframe {
+  border: none;
+  height: 300px;
+}
+
 header {
   text-align: center;
 }
@@ -15,11 +20,6 @@ header {
 
 a {
   text-decoration: none;
-}
-
-main {
-  text-align: center;
-  margin: 2rem;
 }
 
 .center {
