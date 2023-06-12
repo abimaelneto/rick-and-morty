@@ -16,6 +16,7 @@ export default {
       isUnknown: false,
       loading: false,
       error: false,
+      textError: "",
     };
   },
   methods: {
@@ -30,16 +31,29 @@ export default {
             this.characters = data.results;
             this.loading = false;
           } catch {
+            this.textError = "CHARACTER NOT FOUND";
             this.loading = false;
             this.error = true;
           }
         });
     },
     prev() {
-      this.getCharacters(this.prevCharacters);
+      if (!this.prevCharacters) {
+        this.textError = "No prev characters";
+        this.loading = false;
+        this.error = true;
+      } else {
+        this.getCharacters(this.prevCharacters);
+      }
     },
     next() {
-      this.getCharacters(this.nextCharacters);
+      if (!this.nextCharacters) {
+        this.textError = "No more characters";
+        this.loading = false;
+        this.error = true;
+      } else {
+        this.getCharacters(this.nextCharacters);
+      }
     },
     handleSearch(src, sts) {
       if (!sts) {
@@ -107,7 +121,7 @@ export default {
       <iframe src="https://embed.lottiefiles.com/animation/39133"></iframe>
     </div>
 
-    <Error v-show="error" @close="close" />
+    <Error v-show="error" @close="close" :textError="textError" />
 
     <div class="container" v-show="!loading">
       <div
