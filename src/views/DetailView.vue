@@ -49,16 +49,16 @@ export default {
 </script>
 
 <template>
-  <div class="center">
+  <div class="contentChar">
     <img
-      class="c-image"
+      class="char-image"
       :src="`https://rickandmortyapi.com/api/character/avatar/${this.characterId}.jpeg`"
       alt=""
     />
-    <table class="table">
+    <table class="table tabContent">
       <tr>
         <th>Name</th>
-        <td>{{ character.Name }}</td>
+        <td  class="nameChar">{{ character.Name }}</td>
       </tr>
       <tr>
         <th>Status</th>
@@ -76,50 +76,44 @@ export default {
       <tr>
         <th>Last Seen</th>
         <td>
-          <RouterLink :to="`/LocationDetails/${character.locationId}`">
+          <RouterLink
+            class="tabContent charLocation"
+            :to="`/LocationDetails/${character.locationId}`"
+          >
             {{ character.Location }}
           </RouterLink>
         </td>
       </tr>
+
       <tr>
         <th>Episodes</th>
-        <td>
-          <Episodes :episodes="episodes" />
-        </td>
+        <div class="line">
+          <td class="episodes charLocation">
+            <Episodes :episodes="episodes"/>
+          </td>
+        </div>
       </tr>
     </table>
   </div>
 </template>
 
 <style scoped>
-.center {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-.table {
-  margin-top: 50px;
-  min-width: 50vw;
-  max-width: 90vw;
-}
 
 th {
-  border-bottom: 1px solid green;
-  font-weight: 700;
+  font-weight: 500;
   text-align: left;
   width: 20vw;
   height: 5vh;
   padding-left: 10px;
-  color: rgb(24, 150, 150);
+  font-style: italic;
+  color: #888888;
+  font-size: 1.2rem;
 }
 
 td {
-  border-bottom: 1px solid green;
-
-  font-weight: 500;
+  font-weight: 700;
   text-align: left;
   padding-left: 10px;
+  font-size: 1.3rem;
 }
 </style>
