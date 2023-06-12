@@ -149,7 +149,7 @@ export default {
           </h3>
           <p class="italic info">Last Seen</p>
           <RouterLink
-            :to="`/LocationDetails/${character.location.url.split('/')[5]}`"
+            :to="`/location-details/${character.location.url.split('/')[5]}`"
           >
             <h3 class="charLocation">{{ character.location.name }}</h3>
           </RouterLink>
