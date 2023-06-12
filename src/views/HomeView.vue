@@ -8,16 +8,19 @@ export default {
       nextCharacters: null,
       isDead: false,
       isUnknown: false,
+      loading: false,
     };
   },
   methods: {
     getCharacters(url) {
+      this.loading = true;
       fetch(url)
         .then((res) => res.json())
         .then((data) => {
           this.prevCharacters = data.info.prev;
           this.nextCharacters = data.info.next;
           this.characters = data.results;
+          this.loading = false;
         });
     },
     prev() {
@@ -32,7 +35,7 @@ export default {
           `https://rickandmortyapi.com/api/character/?name=${src.toLowerCase()}`
         );
       } catch (error) {
-        alert("Character not found");
+        alert("Character not found"); 
       }
     },
     handleStatus(status) {
@@ -61,7 +64,11 @@ export default {
       </span>
     </div>
 
-    <div class="container">
+    <div v-show="loading">
+      <iframe src="https://embed.lottiefiles.com/animation/39133"></iframe>
+    </div>
+
+    <div class="container" v-show="!loading">
       <div
         class="character"
         v-for="character in characters"
