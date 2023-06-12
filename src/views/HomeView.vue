@@ -1,10 +1,11 @@
 <script>
+import { ref } from "vue";
 export default {
   data() {
     return {
       characters: [],
       search: "",
-      filterStatus: null,
+      filterStatus: ref(""),
       prevCharacters: null,
       nextCharacters: null,
       isDead: false,
@@ -78,8 +79,9 @@ export default {
 
       <select v-model="filterStatus">
         <option disabled value="">Choose...</option>
-        <option>Dead</option>
         <option>Alive</option>
+        <option>Dead</option>
+        <option>Unknown</option>
       </select>
 
       <button @click="handleSearch(search, filterStatus)" class="btn filterBtn">
