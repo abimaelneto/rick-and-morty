@@ -58,7 +58,7 @@ export default {
     <table class="table tabContent">
       <tr>
         <th>Name</th>
-        <td  class="nameChar">{{ character.Name }}</td>
+        <td class="nameChar">{{ character.Name }}</td>
       </tr>
       <tr>
         <th>Status</th>
@@ -78,7 +78,7 @@ export default {
         <td>
           <RouterLink
             class="tabContent charLocation"
-            :to="`/LocationDetails/${character.locationId}`"
+            :to="`/location-details/${character.locationId}`"
           >
             {{ character.Location }}
           </RouterLink>
@@ -87,9 +87,9 @@ export default {
 
       <tr>
         <th>Episodes</th>
-        <div class="line">  
+        <div class="line">
           <td class="episodes">
-            <Episodes :episodes="episodes"/>
+            <Episodes :episodes="episodes" />
           </td>
         </div>
       </tr>
@@ -98,7 +98,6 @@ export default {
 </template>
 
 <style scoped>
-
 th {
   font-weight: 500;
   text-align: left;
