@@ -44,7 +44,9 @@ export default {
     },
     handleSearch() {
       this.getCharacters(
-        `https://rickandmortyapi.com/api/character/?name=${this.search.toLowerCase()}&status=${this.status.toLowerCase()}`
+        `${
+          import.meta.env.VITE_API_BASE_URL
+        }/character/?name=${this.search.toLowerCase()}&status=${this.status.toLowerCase()}`
       );
     },
     handleStatus(status) {
