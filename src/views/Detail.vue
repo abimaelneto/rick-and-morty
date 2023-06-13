@@ -1,12 +1,12 @@
 <script>
-import Episodes from "../components/Episodes.vue";
+import EpisodesList from "../components/EpisodesList.vue";
 
 export default {
   props: {
     characters: Object,
   },
   components: {
-    Episodes,
+    EpisodesList,
   },
   data() {
     return {
@@ -42,7 +42,7 @@ export default {
   },
   mounted() {
     this.getCharacter(
-      `https://rickandmortyapi.com/api/character/${this.characterId}`
+      `${import.meta.env.VITE_API_BASE_URL}/character/${this.characterId}`
     );
   },
 };
@@ -89,7 +89,7 @@ export default {
         <th>Episodes</th>
         <div class="line">
           <td class="episodes">
-            <Episodes :episodes="episodes" />
+            <EpisodesList :episodes="episodes" />
           </td>
         </div>
       </tr>
