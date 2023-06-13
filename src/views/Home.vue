@@ -1,62 +1,45 @@
 <script>
 import { ref } from "vue";
-import Error from "../components/Error.vue";
+import { apiMixin } from "@/mixins/api";
 export default {
-  components: {
-    Error,
-  },
+  mixins: [apiMixin],
   data() {
     return {
       characters: [],
       search: "",
       filterStatus: ref(""),
-      prevCharacters: null,
-      nextCharacters: null,
       isDead: false,
       isUnknown: false,
-      loading: false,
-      error: false,
-      textError: "",
+      loadingSearch: true,
     };
   },
   methods: {
     getCharacters(url) {
-      this.loading = true;
-      fetch(url)
-        .then((res) => res.json())
-        .then((data) => {
-          try {
-            this.prevCharacters = data.info.prev;
-            this.nextCharacters = data.info.next;
-            this.characters = data.results;
-            this.loading = false;
-          } catch {
-            this.textError = "CHARACTER NOT FOUND";
-            this.loading = false;
-            this.error = true;
-          }
-        });
+      this.myFetch(url, (data) => {
+        try {
+          console.log(data.banana);
+          this.prev = data.info.prev;
+          this.next = data.info.next;
+          this.characters = data.results;
+        } catch (e) {
+          console.error(e);
+          this.error = "CHARACTER NOT FOUND";
+        }
+      });
     },
-    paginate(target) {
-      this.getCharacters(
-        target == "next" ? this.nextCharacters : this.prevCharacters
-      );
-    },
+
     handleSearch() {
       this.getCharacters(
         `${
           import.meta.env.VITE_API_BASE_URL
-        }/character/?name=${this.search.toLowerCase()}&status=${this.status.toLowerCase()}`
+        }/character/?name=${this.search.toLowerCase()}&status=${this.filterStatus.toLowerCase()}`
       );
     },
-    handleStatus(status) {
-      if (status.toLowerCase() == "dead") {
-        return "dead";
-      } else if (status.toLowerCase() == "unknown") return "unknown";
-      else return "status";
-    },
-    close() {
-      this.error = false;
+    getStatusClass(status) {
+      const value = status.toLowerCase();
+      if (value == "dead") return "dead";
+      if (value == "unknown") return "unknown";
+      return null;
     },
   },
   mounted() {
@@ -91,24 +74,22 @@ export default {
       <button @click="handleSearch" class="btn filterBtn">FILTER</button>
     </div>
 
-    <div v-show="loading">
-      <iframe src="https://embed.lottiefiles.com/animation/39133"></iframe>
-    </div>
+    <Loading :show="loading" />
 
-    <Error v-show="error" @close="close" :textError="textError" />
+    <Error v-if="error" @close="close" :error="error" />
 
     <div class="moreCharacters">
       <button
-        @click="paginate('prev')"
+        @click="paginate('prev', getCharacters)"
         class="btn prev"
-        :disabled="!prevCharacters"
+        :disabled="!prev"
       >
         <span class="material-symbols-rounded center">arrow_back_ios_new</span>
       </button>
       <button
-        @click="paginate('next')"
+        @click="paginate('next', getCharacters)"
         class="btn next"
-        :disabled="!nextCharacters"
+        :disabled="!next"
       >
         <span class="material-symbols-rounded center">arrow_forward_ios</span>
       </button>
@@ -126,7 +107,7 @@ export default {
             <h2 class="charName">{{ character.name }}</h2>
           </RouterLink>
           <p class="info italic">{{ character.species }}</p>
-          <h3 :class="['status', handleStatus(character.status)]">
+          <h3 :class="['status', getStatusClass(character.status)]">
             {{ character.status }}
           </h3>
           <p class="italic info">Last Seen</p>
