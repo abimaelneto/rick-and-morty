@@ -3,7 +3,7 @@ import { stringifyQuery } from "vue-router";
 
 export default {
   props: {
-    textError: String,
+    error: String,
   },
   methods: {
     close() {
@@ -14,7 +14,7 @@ export default {
 </script>
 <template>
   <div class="error center">
-    <h2 class="title">{{ textError.toUpperCase() }}</h2>
+    <h2 class="title">{{ error.toUpperCase() }}</h2>
     <iframe src="https://embed.lottiefiles.com/animation/39138"></iframe>
 
     <button @click="close">
