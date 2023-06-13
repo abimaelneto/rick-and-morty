@@ -39,11 +39,11 @@
   font-size: 1.5rem;
 }
 
-.status.dead {
+.dead {
   color: #ff1818;
 }
 
-.status.unknown {
+.unknown {
   color: #838383;
 }
 
