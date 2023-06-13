@@ -9,7 +9,13 @@
   transition: all ease 0.3s;
 }
 
-.btn:hover {
+.btn:not(:disabled):hover {
   background-color: #00ff55;
   color: #1e1e1e;
+}
+
+.btn:disabled {
+  color: grey;
+  border-color: grey;
+  cursor: unset;
 }

@@ -1,7 +1,8 @@
 <script>
 import Residents from "../components/Residents.vue";
-
+import { apiMixin } from "@/mixins/api.js";
 export default {
+  mixins: [apiMixin],
   components: {
     Residents,
   },
@@ -14,6 +15,12 @@ export default {
   },
   methods: {
     getEpisode(url) {
+      this.myFetch(url, (data) => {
+        this.episode = data;
+        this.getResidents(data.characters);
+      });
+
+      return;
       fetch(url)
         .then((res) => res.json())
         .then((data) => {
@@ -39,6 +46,7 @@ export default {
 </script>
 
 <template>
+  {{ teste }}
   <main>
     <h2 class="title">Episode: {{ episode.name }}</h2>
     <h3>{{ episode.episode }}</h3>
